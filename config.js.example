@@ -1,0 +1,8 @@
+var config = {
+    client_id: 'clientid',
+    client_secret: 'secret',
+    redirect_uri: 'http://localhost:3000/redirect'
+
+  };
+
+module.exports = config;

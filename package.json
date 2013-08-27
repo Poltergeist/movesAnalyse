@@ -1,0 +1,11 @@
+{
+  "name": "My0wn4p1",
+  "description": "This concludes for now the moves api and aggrigates time I have been at one spot",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "level": "*",
+    "moves": "*"
+  }
+}
