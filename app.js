@@ -2,6 +2,7 @@ var express = require('express'),
   levelup = require('level'),
   db = levelup('./mydb'),
   Moves = require('moves'),
+  fs = require('fs'),
   config = require('./config.js'),
   moves = new Moves(config),
   token = {},
@@ -126,8 +127,18 @@ app.get('/story', function(req, res){
   while(dates.end < today){
     start = getCrapDate(dates.start);
     end = getCrapDate(dates.end);
+    getAll = function(start, end){
     moves.get('/user/storyline/daily?from='+start+'&to='+end, token.access_token, function(error, response, body) {
         data = JSON.parse(body);
+            console.log(start, end, "calc");
+            fs.writeFile("export/"+start+end+".json", body, function(err){
+              if(err){
+                console.log(err);
+                return;
+              }
+              console.log(start+end+"writte");
+            })
+
       data.forEach(function(value, index){
         value.segments.forEach(function(value, index){
           var start, end;
@@ -145,6 +156,8 @@ app.get('/story', function(req, res){
       });
       db.put('total', JSON.stringify(total));
     });
+    };
+    getAll(start, end);
     dates.start = new Date(dates.end*1 + (1000*60*60*24) );
     dates.end = new Date ( dates.start*1 + (1000*60*60*24*6));
   }
@@ -168,10 +181,33 @@ app.get('/places', function(req, res){
     res.send(body);
   });
 });
+app.get('/locs', function(req, res){
+  var locs = [];
+  if(!token.access_token){
+    res.redirect('/');
+  }
+  moves.get('/user/storyline/daily?from=20130713&to=20130719', token.access_token, function(error, response, body) {
+    var data = JSON.parse(body);
+    data.forEach(function(value, index){
+      value.segments.forEach(function(value, index){
+        console.log(value);
+        if(value.place && value.place.location){
+          locs.push(value.place);
+        }
+      });
+    });
+    res.send(locs);
+  });
+});
 app.get('/total', function(req, res){
   db.get('total', function(err, value){
     console.log(req);
     res.send(value);
+  });
+});
+app.get('/db', function(req, res){
+  db.get('20*', function(err, value){
+    res.send(err+' '+value);
   });
 });
 app.get('/refresh', function(req, res){

@@ -1,0 +1,44 @@
+.day
+  margin: auto
+  width: 960px
+  height: 30px
+  background: #eee
+  position: relative
+  overflow: hidden
+  padding-right: 150px
+  &:before
+    content: attr(data-date)
+    display: block
+    position: absolute
+    left: 960px
+    width: 150px
+    margin-top: 5px
+    margin-left: 10px
+  div
+    top: 5px
+    height: 20px
+    background: red
+    box-sizing: border-box
+    border: none
+.chronic .day div
+  position: absolute
+.aggregate .day div
+  float: left
+  margin-top: 5px
+.list
+  width: 960px
+  padding-right: 150px
+  margin: auto
+.control
+  width: 960px
+  padding-right: 150px
+  margin: auto
+  span
+    cursor: pointer
+  .active
+    text-decoration: underline
+.graph
+  width: 960px
+  display: block
+  margin: auto
+  padding-right: 150px
